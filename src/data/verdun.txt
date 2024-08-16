@@ -1,0 +1,56 @@
+101
+Single Queen
+2
+80
+true
+102
+Single Queen
+2
+80
+false
+103
+Double Queen
+4
+90
+false
+104
+Double Queen
+4
+90
+false
+105
+Double Queen
+4
+90
+false
+201
+King
+2
+110
+true
+202
+King
+2
+110
+false
+203
+King
+2
+110
+false
+204
+King
+2
+110
+false
+301
+Suite
+2
+150
+true
+302
+Suite
+2
+150
+false
+

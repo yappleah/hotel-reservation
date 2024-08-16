@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+* {
+    margin: 0;
+}
+
+body {
+    background-color: rgb(201, 225, 246);
+}
+
+#content {
+    overflow:hidden;
+}
+
+footer {
+    height: 100%;
+    background-color: rgb(108, 181, 223);
+}
+
+p {
+    margin: 10px 20px;
+}
+
+#left-aside, #right-aside{
+    background-color: white;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+#right-side {
+    margin-right: 20px;
+}
+
+#left-aside {
+    float: left;
+    margin-left: 20px;
+}
+
+#logo {
+    border-radius: 100%;
+}
+
+.mainImgs {
+    height: 80%;
+    width: 100%;
+    margin-top: 20px;
+}

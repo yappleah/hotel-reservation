@@ -1,0 +1,77 @@
+{% extends 'base.twig' %} 
+{% block title %}Best Eastern Hotel{% endblock %}
+{% block meta %}
+    <meta name="description" content="Best Eastern Hotel Main page">
+    <meta name="keywords" content="Best Eastern Hotel, Laval, Verdun, Longueuil, Montreal, Canada">
+{% endblock %}
+{% block nav %}
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="../public/rooms.html">Rooms and Amenities</a>
+    </li>
+{% endblock %}
+{% block content %} 
+    <div class="rounded container">
+        <div class="row">
+            <div class="col-lg-9 col-md-6">
+                <div id="left-aside" class="rounded">
+                    <h1 class="text-primary">Welcome to Best Eastern Hotel</h1>
+                    <p>We are one of the top hotel chains in Montreal. We have locations in Laval, Verdun, and Longueuil. Our hotels are in ideal locations where you can explore all over Montreal with ease and convenience.</p>
+                    <p>We also provide complementary shuttle bus rides to and from the YUL airport.</p>
+                    <p>We hope your stay with us is one to remember!</p>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <img src="../public/images/hotel-outside.png" class="mainImgs" alt="Image of outside of a Best Eastern Hotel">
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <img src="../public/images/double-queen.png" class="mainImgs" alt="Image of a double queen hotel room">
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <img src="../public/images/gym.png" class="mainImgs" alt="Image of a gym inside a Best Eastern Hotel">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="right-aside" class="rounded col-lg-3 col-md-6">
+            {% block form %}
+                <form action="../src/availabilities.php" method="post">
+                    <label for="location">Location</label>
+                    <select id="location" name="location" class="form-select">
+                        <option value="verdun">Verdun</option>
+                        <option value="longueuil">Longueuil</option>
+                        <option value="laval">Laval</option>
+                    </select>
+                    <label for="check-in">Check-in</label>
+                    <input type="date" id="check-in" name="check-in" class="form-control" required min="{{ todayDate }}" value="">
+                    <label for="check-in">Check-out</label>
+                    <input type="date" id="check-out" name="check-out" class="form-control"  min="{{ todayDate }}" required value="">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="minusAdult" class="btn btn-sm" onclick="return false"><i class="bi bi-dash-square"></i></button>
+                            <input type="text" id="adults" name="adults" readonly value="1" size="2"><label for="adults">&nbsp;Adults&nbsp;&nbsp;&nbsp;</label> 
+                            <button id="addAdult" class="btn btn-sm" onclick="return false"><i class="bi bi-plus-square"></i></button>
+                            <br>
+                        </div>
+                        <div class="col-md-12">
+                            <button id="minusChild" class="btn btn-sm" onclick="return false"><i class="bi bi-dash-square"></i></button>
+                            <input type="text" id="children" name="children" readonly value="0" size="2"><label for="children">&nbsp;Children</label>
+                            <button id="addChild" class="btn btn-sm" onclick="return false"><i class="bi bi-plus-square"></i></button>
+                            <br>
+                        </div>
+                    </div>
+                    <input type="checkbox" name="smoking" id="smoking"><label for="smoking">Smoking-Allowed</label>
+                    <input type="submit" name="submit" class="btn btn-primary mt-3 float-end" value="Find My Room">
+                    <div id="numberOfNights" style="margin-top: 20px;">&nbsp;</div>
+                </form>
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block myJavascript %}
+    <script type="text/javascript" src="../public/js/bookingDate.js"></script>
+    <script type="text/javascript" src="../public/js/addGuests.js"></script>
+{% endblock %}

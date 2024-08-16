@@ -1,0 +1,107 @@
+{% extends 'base.twig' %}
+{% block title %}Best Eastern Hotel Booking Confirmation{% endblock %}
+{% block meta %}
+    <meta name="description" content="Best Eastern Hotel Booking Complete">
+    <meta name="keywords" content="Best Eastern Hotel, bookings, Laval, Verdun, Longueuil, Montreal, Canada, complete">
+{% endblock %}
+{% block content %}
+    <div class="text-center mx-auto mt-4"><a href="../public/index.php" class="btn btn-primary"><strong>Back To Home</strong></a></div>
+    <div style="width: 90%; background-color: white;" class="mx-auto rounded p-4 text-center my-4">
+    <button id="pdfBtn" name="pdfBtn" class="btn btn-success">Print to PDF</button>
+    <div id="confirmationDiv">
+        <h1 class='text-primary'>Booking Confirmation</h1> 
+        <p>Thank you for booking with us!</p>
+        <p>It is recommended to print and bring this confirmation with you when checking in and for your records. Please remember to bring a valid government-issued form of identification upon checking in.</p>
+        <p>You can contact us through email at info@besteastern.com or call us at 123-456-7890.<p>
+        <div class="table-responsive">
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th colspan='4'>Booking Details</th>
+                </tr>
+            </thead>
+            <tbody class='text-start'>
+            <tr>
+                <th>Customer Name</th>
+                <td>{{ firstName }} {{ lastName }}</td>
+                <th>Confirmation Number</th>
+                <td>#{{ confirmationNumber }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ emailAddress }}</td>
+                <th>Hotel Location</th>
+                <td>{{ location }}</td>
+            </tr>
+            <tr>
+                <th>Phone Number</th>
+                <td>{{ phoneNumber }}</td>                
+                <th>Room Type</th>
+                    {% if smoking == 'true' %}
+                        <td>{{ roomType }}, Smoking-Allowed</td>
+                    {% else %}
+                        <td>{{ roomType }}, Non-Smoking</td>
+                    {% endif %}
+            </tr>
+                <th>Adults</th>
+                <td>{{ adults }}</td>
+                <th>Check-in Date</th>
+                <td>{{ check_in }}</td>                
+            </tr>
+            <tr>
+                <th>Children</th>
+                <td>{{ children }}</td>
+                <th>Check-out Date</th>
+                <td>{{ check_out }}</td>
+            </tr>
+            <tr>
+                <th>Booking Date</th>
+                <td><span id='bookingDate'>&nbsp;</span></td>
+                <th>Amount Due</th>
+                <td>${{ rate }}</td>
+            </tr>
+        </tbody>
+    </table> 
+    </div>
+    </div>
+    </div>
+    <div style="width: 70%; background-color: white;" class="mx-auto rounded p-4 text-center my-4">
+    <h4 class="text-primary">Current Weather in {{ location}} </h4>
+        {% set temp = (weather.main.temp - 273.15) | number_format(2, '.', '') %}
+        Temperature: {{ temp }}&deg;C<br>
+        Description: {{ weather.weather[0].description }}
+    </div>
+{% endblock %}
+{% block myJavascript %}
+    <script>
+        let today = new Date();
+        today = today.toISOString().split('T')[0];
+        document.getElementById('bookingDate').innerHTML = today;
+
+        document.getElementById('pdfBtn').addEventListener('click', () => {
+            let code = "<h1 style='font-weight: bold; color: blue; font-size: 4rem;'>Best Eastern Hotel</h1>";
+            let htmlContent = code + document.getElementById('confirmationDiv').innerHTML;
+            fetch('generatePDF.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `html=${encodeURIComponent(htmlContent)}&confirmationNumber={{ confirmationNumber }}`,
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'BookingConfirmation#{{confirmationNumber}}.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error('Error generating PDF:', error);
+            });
+        });
+    </script>
+{% endblock %}

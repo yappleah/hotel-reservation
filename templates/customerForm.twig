@@ -1,0 +1,107 @@
+{% extends 'base.twig' %}
+{% block title %}Best Eastern Hotel Booking{% endblock %}
+{% block meta %}
+    <meta name="description" content="Best Eastern Hotel Customer Form and Booking Details">
+    <meta name="keywords" content="Best Eastern Hotel, bookings, customer form, Laval, Verdun, Longueuil, Montreal, Canada">
+{% endblock %}
+{% block content %}
+<div style="width: 90%" class="mx-auto container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div id="left-aside" class="rounded">
+                <h2 class="text-primary">Booking Details</h2>
+                <p><strong>Location: </strong>{{ location }}</p>
+                <p><strong>Room Type: </strong>{{ roomType }}</p>
+                <p><strong>Check-in: </strong>{{ checkInDate }}</p>
+                <p><strong>Check-out: </strong>{{ checkOutDate }}</p>
+                <p><strong>Number of Nights: </strong><span id="numberOfNights">&nbsp;</span></p>
+                <p><strong>Adults: </strong>{{ adults }}</p>
+                <p><strong>Children: </strong>{{ children }}</p>
+                {% if smoking == 'true' %}
+                    <p><strong>Smoking-Allowed</strong></p>
+                {% else %}
+                    <p><strong>Non-Smoking</strong></p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div id="right-aside" class="rounded">
+                <form action="processBooking.php" method="post" id="booking">
+                    <h2 class="text-primary">Customer Information</h2>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" required onfocusout="formatFName();">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" required onfocusout="formatLName();">
+                    </div>
+                    <div class="mb-3">
+                        <label for="emailAddress" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="emailAddress" name="emailAddress" required onfocusout="formatEmail();">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                    </div>
+                    <input type="submit" name="book" id="book" value="Book Now" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block myJavascript %}
+    <script>
+        const checkInDate = new Date("{{ checkInDate }}");
+        const checkOutDate = new Date("{{ checkOutDate }}");
+        let start = new Date(checkInDate.toISOString().split('T')[0]);
+        let end = new Date(checkOutDate.toISOString().split('T')[0]);
+        let timeDifference = end.getTime() - start.getTime();
+        let diffDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        document.getElementById('numberOfNights').innerHTML = `${diffDays} night(s)`;
+
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        
+        phoneNumberInput.addEventListener('input', function (e) {
+            let value = e.target.value;
+            value = value.replace(/\D/g, '');
+            if (value.length > 3 && value.length <= 6) {
+                value = value.replace(/^(\d{3})(\d{0,3})/, '$1-$2');
+            } else if (value.length > 6) {
+                value = value.replace(/^(\d{3})(\d{3})(\d{0,4}).*/, '$1-$2-$3');
+            }
+            e.target.value = value;
+        });
+
+        function formatFName() {
+            let firstName = document.getElementById('firstName').value.trim().toLowerCase();
+            const splitName = firstName.split(" ");
+
+            for (let i = 0; i < splitName.length; i++) {
+                splitName[i] = splitName[i][0].toUpperCase() + splitName[i].substr(1);
+            }
+
+            let formattedName = splitName.join(" ");
+            document.getElementById('firstName').value = formattedName;
+        }
+
+        function formatLName() {
+            let lastName = document.getElementById('lastName').value.trim().toLowerCase();
+            const splitName = lastName.split(" ");
+
+            for (let i = 0; i < splitName.length; i++) {
+                splitName[i] = splitName[i][0].toUpperCase() + splitName[i].substr(1);
+            }
+
+            let formattedName = splitName.join(" ");
+            document.getElementById('lastName').value = formattedName;
+        }
+
+        function formatEmail() {
+            document.getElementById('emailAddress').value = document.getElementById('emailAddress').value.trim().toLowerCase();
+        }
+
+
+    </script>
+{% endblock %}
