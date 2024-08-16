@@ -1,0 +1,7 @@
+{"require": {
+        "nesbot/carbon": "^2.72",
+                "twig/twig": "^3.9",
+                "monolog/monolog": "^2.9",
+                "twbs/bootstrap-icons": "^1.11",
+                "dompdf/dompdf": "^2.0"
+    }}
